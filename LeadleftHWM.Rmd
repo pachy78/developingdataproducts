@@ -1,0 +1,51 @@
+---
+title: "Peer-graded Assignment: R Markdown and Leaflet"
+author: "Patricia Ortiz Suárez"
+date: "September 16, 2017"
+output: html_document
+---
+
+##Instructions
+
+Create a web page using R Markdown that features a map created with Leaflet.
+
+Host your webpage on either GitHub Pages, RPubs, or NeoCities.
+
+Your webpage must contain the date that you created the document, and it must contain a map created with Leaflet. We would love to see you show off your creativity!
+
+##Assignement
+
+###Assignement Date: `r Sys.Date()`
+
+```{r echo = FALSE, warning=FALSE}
+suppressMessages(library(dplyr))
+suppressMessages(library(leaflet))
+suppressMessages(library(knitr))
+
+df <- read.csv("simplemaps-worldcities-basic.csv")
+df <- df %>% filter(country == "Dominican Republic") %>% select(city,lat,lng,pop,country)
+
+```
+
+###Data
+
+The data that was used for this map was obtained from simplemaps.com
+I used the [World Cities Database](http://simplemaps.com/data/world-cities) that can be downloaded from [here](http://simplemaps.com/data/world-cities) and created a sub-set for my country, The Dominican Republic.
+
+Here is the data:
+
+```{r echo =FALSE, comment=""}
+kable(df)
+```
+
+###Map
+
+Here is the map:
+
+```{r echo=FALSE}
+df %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addCircles(weight = 1, radius = sqrt(df$pop) * 30)
+
+```
